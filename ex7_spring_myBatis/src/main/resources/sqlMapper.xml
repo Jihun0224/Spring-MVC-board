@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.emp.dao.EmpDao">
+
+	<insert id="registerEmp" parameterType="Emp">
+		insert into emp (ename, phone, dept)
+		values (#{ename}, #{phone}, #{dept})
+	</insert>
+	<resultMap type="Emp" id="empList">
+		<result column="eno" property="eno"/>
+		<result column="ename" property="ename"/>
+		<result column="phone" property="phone"/>
+		<result column="dept" property="dept"/>
+	</resultMap>
+	<sql id="search">
+		<if test="word != null and word != ''">
+			where ${key} = #{word}
+		</if>
+	</sql>
+	<select id="listEmp" resultMap="empList">
+		select eno, ename, phone,dept
+		from emp
+		<include refid="search"></include>
+	</select>
+	<select id="getEmp" parameterType="int" resultMap="empList" >
+		select eno, ename, phone,dept
+		from emp
+		where eno=#{eno}
+	</select>
+	<delete id="deleteEmp" parameterType="int">
+		delete from emp
+		where eno = #{eno}
+	</delete>
+	<update id="updateEmp" parameterType="emp">
+		update emp
+		set ename = #{ename}, phone = #{phone},dept = #{dept}
+		where eno = #{eno}
+	</update>
+
+</mapper>
